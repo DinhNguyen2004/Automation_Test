@@ -121,8 +121,10 @@
             //Date of Birth : optional
         WebElement lbl_DoB = dr.findElement(By.xpath("//label[text()='Date of Birth']"));
         System.out.println("Label lbl_DoB: " + lbl_DoB.getText());
-        WebElement i_DoB = dr.findElement(By.xpath("//div[text()='Clear']"));
+        WebElement i_DoB = dr.findElement(By.xpath("(//input[@placeholder='yyyy-mm-dd'])[2]"));
         i_DoB.click();
+        WebElement value_clear = dr.findElement(By.xpath("//div[text()='Clear']"));
+        value_clear.click();
 
             //Gender : Female
         WebElement lbl_Gender = dr.findElement(By.xpath("//label[text()='Gender']"));
