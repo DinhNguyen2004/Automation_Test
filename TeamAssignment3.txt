@@ -1,0 +1,193 @@
+package demo;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+
+public class testClass {
+    //Variable:
+    //Flow1:
+    //Login
+        //username
+    @FindBy(how = How.XPATH, using = "//input[@name='username']")
+    public WebElement username;
+        //password
+    @FindBy(how = How.XPATH, using = "//input[@name='password']")
+    public WebElement password;
+    //Flow2:
+    //Click Myinfo
+    @FindBy(how = How.XPATH, using = "//a[@href='/web/index.php/pim/viewMyDetails']")
+    public WebElement btnTabs_Myinfo;
+    //Flow3:
+    //Fullname
+    //Firstname
+    @FindBy(how = How.XPATH, using = "//input[@name='firstName']")
+    public WebElement firstName;
+    //Middlename
+    @FindBy(how = How.XPATH, using = "//input[@name='middleName']")
+    public WebElement middleName;
+    //Lastname
+    @FindBy(how = How.XPATH, using = "//input[@name='lastName']")
+    public WebElement lastName;
+    //Gender: Female
+    @FindBy(how = How.XPATH, using = "//label[text()='Gender']/../following-sibling::div/div[2]")
+    public WebElement Gen_female;
+    public WebDriver edriver;
+
+    public WebDriverWait ewait;
+
+    public testClass() {
+
+        edriver = new ChromeDriver();
+        PageFactory.initElements(edriver, this);
+        ewait = new WebDriverWait(edriver, Duration.ofSeconds(5));
+    }
+
+    @Before
+    public void setUp() {
+        edriver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+    }
+
+    @Test
+    public void test() throws Exception {
+        //Flow1: Login
+            //Username
+        sendKeys(username, "Admin");
+            //Password
+        sendKeys(password, "admin123");
+            //Button Login
+        clickElement(edriver.findElement(By.xpath("//*[@type='submit']")));
+        //Flow2: Click Myinfo
+        clickElement(btnTabs_Myinfo);
+        //Flow3: Update Information
+            //Employee Full Name
+                //Firstname : Automation
+        waitUntilElementVisible(firstName);
+        updateDetails(firstName, "Automation");
+                //Middlename : Group 6
+        waitUntilElementVisible(middleName);
+        updateDetails(middleName, "Group 6");
+                 //Lastname : 3
+        waitUntilElementVisible(lastName);
+        updateDetails(lastName, "3");
+            //Nickname: Testing
+        waitUntilElementVisible("//label[text()='Nickname']/../following-sibling::div/input[@class='oxd-input oxd-input--active']");
+        WebElement Nickname = edriver.findElement(By.xpath("//label[text()='Nickname']/../following-sibling::div/input[@class='oxd-input oxd-input--active']"));
+        updateDetails(Nickname,"Testing");
+            //Employee Id: 6
+        waitUntilElementVisible("//label[text()='Employee Id']/../following-sibling::div/input[@class='oxd-input oxd-input--active']");
+        WebElement Emp_Id = edriver.findElement(By.xpath("//label[text()='Employee Id']/../following-sibling::div/input[@class='oxd-input oxd-input--active']"));
+        updateDetails(Emp_Id, "6");
+             //Other Id: 6 * 10
+        waitUntilElementVisible("//label[text()='Other Id']/../following-sibling::div/input[@class='oxd-input oxd-input--active']");
+        WebElement Oth_Id = edriver.findElement(By.xpath("//label[text()='Other Id']/../following-sibling::div/input[@class='oxd-input oxd-input--active']"));
+        updateDetails(Oth_Id, "60");
+             //Driver's License Number: 11111
+        waitUntilElementVisible("(//label[@class='oxd-label'])[4]/../following-sibling::div/input[@class='oxd-input oxd-input--active']");
+        WebElement Driv_Lic = edriver.findElement(By.xpath("(//label[@class='oxd-label'])[4]/../following-sibling::div/input[@class='oxd-input oxd-input--active']"));
+        updateDetails(Driv_Lic, "11111");
+            //License Expiry Date: Today
+        clickElement(edriver.findElement(By.xpath("(//input[@placeholder='yyyy-mm-dd'])[1]")));
+                     //Click value today
+        clickElement(edriver.findElement(By.xpath("//div[text()='Today']")));
+            //SSN Number: 300
+        waitUntilElementVisible("//label[text()='SSN Number']/../following-sibling::div/input[@class='oxd-input oxd-input--active']");
+        WebElement ssn_Num = edriver.findElement(By.xpath("//label[text()='SSN Number']/../following-sibling::div/input[@class='oxd-input oxd-input--active']"));
+        updateDetails(ssn_Num,"300");
+            //Nationality : optional
+        clickElement(edriver.findElement(By.xpath("(//div[@clear='false'])[1]")));
+                    //Click value Belgian
+        clickElement(edriver.findElement(By.xpath("//span[text()='Belgian']")));
+            //Marital Status: Single
+        clickElement(edriver.findElement(By.xpath("//label[text()='Marital Status']/../following-sibling::div")));
+                    //Click value Single
+        clickElement(edriver.findElement(By.xpath("//span[text()='Single']")));
+            //Date of Birth: Optional
+        clickElement(edriver.findElement(By.xpath("(//input[@placeholder='yyyy-mm-dd'])[2]")));
+                    //CLick value Clear
+        clickElement(edriver.findElement(By.xpath("//div[text()='Clear']")));
+            //Gender: Female
+        clickElement(Gen_female);
+            //Military service : 1
+        updateDetails(edriver.findElement(By.xpath("//label[text()='Military Service']/../following-sibling::div/input[@class='oxd-input oxd-input--active']")),"1");
+
+
+        //Smoker: no
+        WebElement check_Smo = edriver.findElement(By.xpath("//label[text()='Smoker']/../following-sibling::div/div/label/input[@type='checkbox']"));
+        if (check_Smo.isSelected()){
+            check_Smo.click();
+        } else {
+            System.out.println("Value: No Smoker");
+        }
+            //Save
+        clickElement(edriver.findElement(By.xpath("(//button[@type='submit'])[1]")));
+
+        //Flow4: Logout
+            //Tabuser
+        clickElement(edriver.findElement(By.xpath("//span[@class='oxd-userdropdown-tab']")));
+            //logout
+        clickElement(edriver.findElement(By.xpath("//a[text()='Logout']")));
+
+    }
+
+    private void sendKeys(WebElement element, String text) {
+        waitUntilElementVisible(element);
+        element.sendKeys(text);
+    }
+
+    private void clickElement(WebElement element) {
+        waitUntilElementVisible(element);
+        element.click();
+    }
+
+    private void updateDetails(WebElement element, String text) {
+        element.click();
+        element.sendKeys(Keys.CONTROL + "A");
+        element.sendKeys(Keys.BACK_SPACE);
+        element.sendKeys(text);
+    }
+
+    @After
+    public void tearDown() throws InterruptedException {
+        Thread.sleep(100000);
+        edriver.close();
+    }
+
+    public void waitUntilElementVisible(WebElement element) {
+        int tryTimes = 0;
+        while (tryTimes < 2) {
+            try {
+                ewait.until(ExpectedConditions.visibilityOf(element));
+                break;
+            } catch (StaleElementReferenceException se) {
+                tryTimes++;
+                if (tryTimes == 2)
+                    throw se;
+            }
+        }
+    }
+    public void waitUntilElementVisible(String path) throws Exception{
+        int tryTimes = 0;
+        while (tryTimes < 2){
+            try {
+                WebElement element = edriver.findElement(By.xpath(path));
+                ewait.until(ExpectedConditions.visibilityOf(element));
+                break;
+            }
+            catch (StaleElementReferenceException se) {
+                tryTimes ++;
+                if (tryTimes == 2)
+                    throw se;
+            }
+        }
+    }
+}
